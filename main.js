@@ -42,15 +42,15 @@ let formatDate = function(date){
 async function loadWind(url) {
     const response  = await fetch(url);
     const jsondata = await response.json();
-    console.log(jsondata[0].header.refTime);
-    console.log(jsondata[0].header.forecastTime);
+    //console.log(jsondata[0].header.refTime);
+    //console.log(jsondata[0].header.forecastTime);
     // UTC in Lokaler Ortszeit
     let forecastDate = new Date(jsondata[0].header.refTime);
     forecastDate.setHours(forecastDate.getHours() + jsondata[0].header.forecastTime)
-    console.log(forecastDate);
+    //console.log(forecastDate);
 
     let forecastLabel = formatDate(forecastDate);
-    console.log("Vorhersagezeitpunkt: ", forecastLabel);
+    //console.log("Vorhersagezeitpunkt: ", forecastLabel);
 };
 loadWind("https://geographie.uibk.ac.at/webmapping/ecmwf/data/wind-10u-10v-europe.json");
 
