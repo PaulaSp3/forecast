@@ -90,6 +90,8 @@ async function loadWeather(url) {
     let forecastDate = new Date(jsondata.properties.timeseries[0].time);
     let forecastLabel = formatDate(forecastDate)
 
+    
+
     let popup = `
     <strong> Wettervorhersage für ${forecastLabel}</strong>
     <ul>
@@ -102,6 +104,10 @@ async function loadWeather(url) {
     <li>Windgeschwindigkeit: ${details.wind_speed * 3.6} (km/h)</li>
     </ul>
 `;
+
+//Wettericons
+let symbol = jsondata.properties.timeseries[0].data.next_1_hours.summary.symbol_code;
+popup += `<img src="icons/${symbol}.svg" alt = "${symbol}" style = "width:32px">`
 
 marker.setPopupContent(popup).openPopup();
 
