@@ -29,7 +29,7 @@ L.control.scale({
 }).addTo(map);
 
 // Datum formatieren
-let formatDate = function(date){
+let formatDate = function (date) {
     return date.toLocaleDateString("de-AT", {
         month: "long",
         day: "numeric",
@@ -40,7 +40,7 @@ let formatDate = function(date){
 
 // Windvorhersage
 async function loadWind(url) {
-    const response  = await fetch(url);
+    const response = await fetch(url);
     const jsondata = await response.json();
     //console.log(jsondata[0].header.refTime);
     //console.log(jsondata[0].header.forecastTime);
@@ -75,9 +75,9 @@ let marker = L.circleMarker([
     0, 0
 ]).bindPopup("Wettervorhersage").addTo(overlays.weather);
 async function loadWeather(url) {
-    const response  = await fetch(url);
+    const response = await fetch(url);
     const jsondata = await response.json();
-    
+
     //Marker positionieren
     marker.setLatLng([
         jsondata.geometry.coordinates[1],
@@ -90,7 +90,7 @@ async function loadWeather(url) {
     let forecastDate = new Date(jsondata.properties.timeseries[0].time);
     let forecastLabel = formatDate(forecastDate)
 
-    
+
 
     let popup = `
     <strong> Wettervorhersage für ${forecastLabel}</strong>
@@ -105,26 +105,25 @@ async function loadWeather(url) {
     </ul>
 `;
 
-//Wettericons
-for (let i = 0; i <= 24; i += 3){
-    let symbol = jsondata.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
-    let forecastDate = new Date(jsondata.properties.timeseries[i].time);
-    let forecastLabel = formatDate(forecastDate);
+    //Wettericons
+    for (let i = 0; i <= 24; i += 3) {
+        let symbol = jsondata.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
+        let forecastDate = new Date(jsondata.properties.timeseries[i].time);
+        let forecastLabel = formatDate(forecastDate);
 
-popup += `<img src="icons/${symbol}.svg" title ="${forecastLabel}" alt = "${symbol}" style = "width:32px">`
-}
+        popup += `<img src="icons/${symbol}.svg" title ="${forecastLabel}" alt = "${symbol}" style = "width:32px">`
+    }
 
 
-marker.setPopupContent(popup).openPopup();
+    marker.setPopupContent(popup).openPopup();
 
 };
 loadWeather("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=47.267222&lon=11.392778");
 
 //Reaktion bei Klick auf Karte
-map.on("click", function(evt) {
+map.on("click", function (evt) {
     console.log(evt);
 
     let url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${evt.latlng.lat}&lon=${evt.latlng.lng}`;
     loadWeather(url);
 })
-
